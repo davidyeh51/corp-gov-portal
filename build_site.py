@@ -90,7 +90,7 @@ def load_source_markdown_files():
                 # 嘗試另一種副檔名
                 alt_ext = ".jpg" if ext == ".png" else ".png"
                 local_rel = f"/images/lectures/lec_{lec_id}_{img_counter[0]}{alt_ext}"
-            return f'<img src="{with_base(local_rel)}" alt="{alt_txt}" style="max-width:100%; border-radius:8px; margin:12px 0;" />'
+            return f'<img src="{local_rel}" alt="{alt_txt}" style="max-width:100%; border-radius:8px; margin:12px 0;" />'
 
         trad = re.sub(r'!\[([^\]]*)\]\((https?://[^\)]+)\)', repl_img, trad)
         lecture_raw_map[lec_id] = trad
@@ -262,11 +262,12 @@ def render_slide_left_html(lec):
     return ""
 
 
-def render_full_slide_card_html(lec, page_idx=1, total_pages=40):
+def render_full_slide_card_html(lec, page_idx=1, total_pages=40, use_base=False):
     """生成完整 16:9 無雜訊顧問簡報 HTML 卡片（左側 8 大版型圖解 ＋ 右側視覺情境圖片與雙軌導讀）"""
     style_cls = f"zn-theme-{lec.get('style', 'mckinsey')}"
     left_html = render_slide_left_html(lec)
-    web_img_url = with_base(lec.get("web_image", "/images/unsplash/topic_00.jpg"))
+    raw_web_img = lec.get("web_image", "/images/unsplash/topic_00.jpg")
+    web_img_url = with_base(raw_web_img) if use_base else raw_web_img
     kw_tags = " / ".join(lec.get("keywords", []))
     beg_summary = lec.get("beginner", {}).get("summary", "")
     adv_name = lec.get("advanced", {}).get("model_name", "")
@@ -1300,7 +1301,7 @@ def write_lecture_pages(lecture_raw_map):
         beg = lec.get("beginner", {})
         adv = lec.get("advanced", {})
         notes = lec.get("speaker_notes", {})
-        course_img = with_base(lec.get("course_image", "/images/lectures/lec_00_1.jpg"))
+        course_img = lec.get("course_image", "/images/lectures/lec_00_1.jpg")
 
         # 組合關鍵術語列表
         term_lines = []
@@ -1474,7 +1475,7 @@ def write_slides_theatre_page():
             "layout_label": lec["layout_label"],
             "in_exec16": lec["id"] in EXEC_16_IDS,
             "keywords": lec.get("keywords", []),
-            "html": render_full_slide_card_html(lec, idx + 1, len(ALL_LECTURES)),
+            "html": render_full_slide_card_html(lec, idx + 1, len(ALL_LECTURES), use_base=True),
             "beginner_summary": lec.get("beginner", {}).get("summary", ""),
             "case_story": lec.get("beginner", {}).get("case_story", ""),
             "model_name": lec.get("advanced", {}).get("model_name", ""),
@@ -1690,7 +1691,7 @@ description: "劉松博《公司治理30講》全書四大模組、五條核心�
 > **全書核心命題**：公司治理不是零散的法條，而是解決 **「所有權與經營權分離後，權力如何分配、如何制衡、如何激勵」** 的系統工程。
 
 <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:10px; padding:18px; margin:18px 0; text-align:center;">
-  <img src="{with_base('/images/lectures/lec_00_1.jpg')}" alt="劉松博公司治理30講原版架構圖" style="max-height:440px; margin:0 auto; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.08);" />
+  <img src="/images/lectures/lec_00_1.jpg" alt="劉松博公司治理30講原版架構圖" style="max-height:440px; margin:0 auto; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.08);" />
   <p style="margin:10px 0 0 0; font-size:13.5px; color:#334155; font-weight:700;">▲ 劉松博《公司治理30講》原版全書知識結構圖：以利益相關者為外環，股東會、董事會、監事會、高層經理人為核心內環</p>
 </div>
 
@@ -1949,7 +1950,7 @@ function toggleKeyword(kw) {{
       </div>
     </div>
     <div style="display:flex; flex-direction:column; gap:10px;">
-      <img src="{with_base('/images/unsplash/topic_cover.jpg')}" alt="Executive Boardroom" style="width:100%; height:200px; object-fit:cover; border-radius:10px; border:2px solid rgba(255,255,255,0.25);" />
+      <img src="/images/unsplash/topic_cover.jpg" alt="Executive Boardroom" style="width:100%; height:200px; object-fit:cover; border-radius:10px; border:2px solid rgba(255,255,255,0.25);" />
       <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; text-align:center;">
         <div style="background:rgba(255,255,255,0.1); padding:10px 6px; border-radius:8px;">
           <div style="font-size:20px; font-weight:900; color:#00A3E0;">40 講</div>

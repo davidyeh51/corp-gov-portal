@@ -67,7 +67,7 @@ function toggleKeyword(kw) {
       </div>
     </div>
     <div style="display:flex; flex-direction:column; gap:10px;">
-      <img src="/corp-gov-portal/images/unsplash/topic_cover.jpg" alt="Executive Boardroom" style="width:100%; height:200px; object-fit:cover; border-radius:10px; border:2px solid rgba(255,255,255,0.25);" />
+      <img src="/images/unsplash/topic_cover.jpg" alt="Executive Boardroom" style="width:100%; height:200px; object-fit:cover; border-radius:10px; border:2px solid rgba(255,255,255,0.25);" />
       <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; text-align:center;">
         <div style="background:rgba(255,255,255,0.1); padding:10px 6px; border-radius:8px;">
           <div style="font-size:20px; font-weight:900; color:#00A3E0;">40 講</div>

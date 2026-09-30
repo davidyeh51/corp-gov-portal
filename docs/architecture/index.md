@@ -8,7 +8,7 @@ description: "劉松博《公司治理30講》全書四大模組、五條核心�
 > **全書核心命題**：公司治理不是零散的法條，而是解決 **「所有權與經營權分離後，權力如何分配、如何制衡、如何激勵」** 的系統工程。
 
 <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:10px; padding:18px; margin:18px 0; text-align:center;">
-  <img src="/corp-gov-portal/images/lectures/lec_00_1.jpg" alt="劉松博公司治理30講原版架構圖" style="max-height:440px; margin:0 auto; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.08);" />
+  <img src="/images/lectures/lec_00_1.jpg" alt="劉松博公司治理30講原版架構圖" style="max-height:440px; margin:0 auto; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.08);" />
   <p style="margin:10px 0 0 0; font-size:13.5px; color:#334155; font-weight:700;">▲ 劉松博《公司治理30講》原版全書知識結構圖：以利益相關者為外環，股東會、董事會、監事會、高層經理人為核心內環</p>
 </div>
 
