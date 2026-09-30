@@ -1,72 +1,105 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: "公司治理知識庫",
-  description: "專業、精準、整潔的企業管理參考簡報教材",
   base: '/corp-gov-portal/',
+  ignoreDeadLinks: true,
+  lang: 'zh-TW',
+  title: '執行長專業知識庫｜CEO Executive Mastery',
+  description: 'A2.5 企業管理頂層入口網站 × 劉松博《公司治理30講》無雜訊顧問簡報與雙軌思考架構百科',
+  cleanUrls: true,
+  head: [
+    ['link', { rel: 'icon', href: '/corp-gov-portal/images/lectures/lec_00_1.jpg' }]
+  ],
   themeConfig: {
-    logo: '/logo.svg',
+    siteTitle: '🏛️ 執行長專業知識庫',
     nav: [
-      { text: '首頁', link: '/' },
-      { text: '公司治理30講', link: '/30-lectures/' },
-      { text: '關於我們', link: '/about' }
+      { text: '🏠 執行長入口首頁', link: '/' },
+      { text: '🎯 無雜訊顧問簡報劇場', link: '/slides/' },
+      { text: '🧭 全書因果架構 (#041)', link: '/architecture/' },
+      {
+        text: '📚 公司治理30講 (全40講)',
+        items: [
+          { text: '模組一：基礎與演進 (00~05)', link: '/30-lectures/00' },
+          { text: '模組二：股權與股東 (06~14)', link: '/30-lectures/06' },
+          { text: '模組三：董事會與監事會 (15~22)', link: '/30-lectures/15' },
+          { text: '模組四：經理人、控制權與家族 (23~39)', link: '/30-lectures/23' }
+        ]
+      },
+      { text: '🗂️ 八大管理領域擴充館', link: '/domains/' },
+      {
+        text: '📥 下載 PPTX 簡報',
+        items: [
+          { text: '📊 下載精華 16 頁決策簡報 (.pptx)', link: 'https://davidyeh51.github.io/corp-gov-portal/downloads/劉松博_公司治理30講_無雜訊顧問簡報_精華16頁.pptx' },
+          { text: '📘 下載全 40 講完整簡報百科 (.pptx)', link: 'https://davidyeh51.github.io/corp-gov-portal/downloads/劉松博_公司治理30講_全40講無雜訊顧問簡報庫.pptx' }
+        ]
+      }
     ],
-    sidebar: {
-      '/30-lectures/': [
-        {
-          text: '公司治理30講',
-          items: [
-            { text: '知識庫總覽', link: '/30-lectures/' },
-            { text: '搞懂公司里那些最要命的事', link: '/30-lectures/00' },
-            { text: '公司：有企业，为什么还有公司？', link: '/30-lectures/01' },
-            { text: '治理：公司如何对抗自身的缺陷？', link: '/30-lectures/02' },
-            { text: '信任：公司到底是靠什么维系的？', link: '/30-lectures/03' },
-            { text: '股东与股权：股权本质上到底是什么权？', link: '/30-lectures/04' },
-            { text: '创业合伙人：该不该和朋友合伙开公司？', link: '/30-lectures/05' },
-            { text: '股权的架构：公司怎么样避免踏进雷区？', link: '/30-lectures/06' },
-            { text: '保住控制权：创始人如何防止被踢出局？', link: '/30-lectures/07' },
-            { text: '同股不同权：为什么股份少也能说了算？', link: '/30-lectures/08' },
-            { text: '企业家悖论：企业家会“害死”公司吗？', link: '/30-lectures/09' },
-            { text: '透明化溢价：公司上市只是为了融资吗？', link: '/30-lectures/10' },
-            { text: '上市的纠结：为什么企业家经常被打脸？', link: '/30-lectures/11' },
-            { text: '权力的制衡：公司该如何治理控股股东？', link: '/30-lectures/12' },
-            { text: '小股东维权：“庶民”要怎样取得胜利？', link: '/30-lectures/13' },
-            { text: '三道防火线：外部治理要如何控制权力？', link: '/30-lectures/14' },
-            { text: '董事会迷失：压舱石为什么常常靠不住？', link: '/30-lectures/15' },
-            { text: '首席执行官：CEO和董事长谁的官儿更大？', link: '/30-lectures/16' },
-            { text: '职业经理人：为什么经理总是和老板掐架？', link: '/30-lectures/17' },
-            { text: '何为职业化：怎么才算优秀的职业经理人？', link: '/30-lectures/18' },
-            { text: '管理层权力：高管薪酬为什么会越来越高？', link: '/30-lectures/19' },
-            { text: '股权怎么发：为什么高管股权激励会失效？', link: '/30-lectures/20' },
-            { text: '混合所有制：国有企业改革到底路在何方？', link: '/30-lectures/21' },
-            { text: '家族与企业：富不过三代是传承的宿命吗？', link: '/30-lectures/22' },
-            { text: '门口野蛮人：防内部人控制还是“失控”？', link: '/30-lectures/23' },
-            { text: '利益相关者：股东至上原则为何没被取代？', link: '/30-lectures/24' },
-            { text: '公司的目的：客户为什么应该排在最前面？', link: '/30-lectures/25' },
-            { text: '德国监事会：德意志银行为何在破产边缘？', link: '/30-lectures/26' },
-            { text: '员工共决制：员工如何强势参与公司治理？', link: '/30-lectures/27' },
-            { text: '进化与惯性：日本治理如何奔向美国模式？', link: '/30-lectures/28' },
-            { text: '事业合伙人：职业经理人包赢不包输怎么破？', link: '/30-lectures/29' },
-            { text: '企业软治理：公司怎样让飘着的价值观落地？', link: '/30-lectures/30' },
-            { text: '普惠制陷阱：全员持股到底是福利还是激励？', link: '/30-lectures/31' },
-            { text: '裂变式创业：到底是灵丹妙药还是镜花水月？', link: '/30-lectures/32' },
-            { text: '生态型组织：公司治理如何升维成生态治理？', link: '/30-lectures/33' },
-            { text: '互联网平台：大数据杀熟为何惹得群情激愤？', link: '/30-lectures/34' },
-            { text: '激励危机：如何应对经营困难与工资照发之间的矛盾？', link: '/30-lectures/35' },
-            { text: '制度下的管理者：杰克·韦尔奇犯了什么错？', link: '/30-lectures/36' },
-            { text: '37｜从OpenAI大战看AI时代的公司治理：尝试与常识', link: '/30-lectures/37' },
-            { text: '你有权成为一个不寻常的人', link: '/30-lectures/38' },
-            { text: '《公司治理》进阶书单', link: '/30-lectures/39' }
-          ]
-        }
-      ]
-    },
+    sidebar: [
+      {
+        text: '🏛️ 執行長專業總覽與簡報中心',
+        collapsed: false,
+        items: [
+          { text: '🏠 執行長專業入口首頁 (含關鍵字檢索)', link: '/' },
+          { text: '🎯 16:9 無雜訊顧問簡報互動劇場', link: '/slides/' },
+          { text: '🧭 跨講次因果邏輯與全書架構 (#041)', link: '/architecture/' },
+          { text: '🗂️ A2.5 八大管理領域擴充館', link: '/domains/' }
+        ]
+      },
+      {
+        text: '模組一：公司治理基礎與演進 (00~05)',
+        collapsed: false,
+        items: [{"text": "00｜00 發刊詞：治理與管理的頂層分野", "link": "/30-lectures/00"}, {"text": "01｜01 公司制度：有限責任與獨立法人", "link": "/30-lectures/01"}, {"text": "02｜02 治理本質：對抗兩大先天制度缺陷", "link": "/30-lectures/02"}, {"text": "03｜03 信任機制：從人際信任走向制度信任", "link": "/30-lectures/03"}]
+      },
+      {
+        text: '模組二：股權結構與股東治理 (06~14)',
+        collapsed: false,
+        items: [{"text": "04｜04 股權本質：剩餘索取權與剩餘控制權", "link": "/30-lectures/04"}, {"text": "05｜05 創業合夥人：AIV 三維遴選模型", "link": "/30-lectures/05"}, {"text": "06｜06 股權架構：避開三大奪命雷區", "link": "/30-lectures/06"}, {"text": "07｜07 保住控制權：四大控制權防禦武器", "link": "/30-lectures/07"}, {"text": "08｜08 同股不同權：AB 股的效率與風險", "link": "/30-lectures/08"}, {"text": "09｜09 企業家悖論：成也蕭何、敗也蕭何", "link": "/30-lectures/09"}, {"text": "10｜10 透明化溢價：陽光是最好的防腐劑", "link": "/30-lectures/10"}, {"text": "11｜11 上市決策：收益、代價與情境動態重評", "link": "/30-lectures/11"}, {"text": "12｜12 制衡控股股東：聯合制衡與事前協議", "link": "/30-lectures/12"}, {"text": "13｜13 小股東維權：累積投票制與結盟限制", "link": "/30-lectures/13"}, {"text": "14｜14 外部治理：資訊、市場與司法三防線", "link": "/30-lectures/14"}, {"text": "15｜15 董事會迷失：獨立性困境與激勵悖論", "link": "/30-lectures/15"}]
+      },
+      {
+        text: '模組三：董事會與監事會運作 (15~22)',
+        collapsed: false,
+        items: [{"text": "16｜16 CEO與董事長：職銜不等於實權", "link": "/30-lectures/16"}, {"text": "17｜17 職業經理人衝突：代理問題與心理所有權", "link": "/30-lectures/17"}, {"text": "18｜18 何為職業化：技能、態度與契約道德", "link": "/30-lectures/18"}, {"text": "19｜19 高管薪酬：錦標賽激勵與管理層權力", "link": "/30-lectures/19"}, {"text": "20｜20 股權激勵：失效條件與五大成功法則", "link": "/30-lectures/20"}, {"text": "21｜21 國企混改：產權清晰與政企邊界", "link": "/30-lectures/21"}, {"text": "22｜22 家族企業：家族治理與公司治理分離", "link": "/30-lectures/22"}, {"text": "23｜23 門口野蠻人：敵意收購的雙面刃", "link": "/30-lectures/23"}, {"text": "24｜24 利益相關者：股東至上 vs. 多方兼顧", "link": "/30-lectures/24"}, {"text": "25｜25 公司的目的：利益中心與權力中心分離", "link": "/30-lectures/25"}, {"text": "26｜26 德國監事會：高位階不保證獨立監督", "link": "/30-lectures/26"}, {"text": "27｜27 員工共決制：勞方保障與決策效率取捨", "link": "/30-lectures/27"}, {"text": "28｜28 日本治理改革：制度進化與路徑依賴", "link": "/30-lectures/28"}]
+      },
+      {
+        text: '模組四：經理人激勵、控制權與家族治理 (23~39)',
+        collapsed: false,
+        items: [{"text": "29｜29 事業合夥人：從共享收益走向共擔風險", "link": "/30-lectures/29"}, {"text": "30｜30 企業軟治理：價值觀落地三部曲", "link": "/30-lectures/30"}, {"text": "31｜31 全員持股：福利與激勵的分界", "link": "/30-lectures/31"}, {"text": "32｜32 裂變式創業：創新特區與複製型擴張", "link": "/30-lectures/32"}, {"text": "33｜33 生態治理：投資不控股與底線規則", "link": "/30-lectures/33"}, {"text": "34｜34 平台治理：三重屬性與演算法公平", "link": "/30-lectures/34"}, {"text": "35｜35 激勵危機：現金流保衛與危機留才", "link": "/30-lectures/35"}, {"text": "36｜36 韋爾奇反思：管理巨人與治理制度邊界", "link": "/30-lectures/36"}, {"text": "37｜37 OpenAI 大戰：AI 時代的治理嘗試與常識", "link": "/30-lectures/37"}, {"text": "A1｜A1 結語：從企業家精神到企業家自覺", "link": "/30-lectures/38"}, {"text": "A2｜A2 進階書單：五大治理問題閱讀地圖", "link": "/30-lectures/39"}]
+      }
+    ],
     search: {
-      provider: 'local'
+      provider: 'local',
+      options: {
+        detailedView: true,
+        translations: {
+          button: {
+            buttonText: '🔍 搜尋知識庫、案例、模型、關鍵字...',
+            buttonAriaLabel: '搜尋知識庫'
+          },
+          modal: {
+            displayDetails: '顯示詳細內容',
+            resetButtonTitle: '清除搜尋',
+            backButtonTitle: '返回',
+            noResultsText: '找不到相關內容，請嘗試搜尋「股權」「萬科」「獨立董事」「毒丸」「AB股」等關鍵字',
+            footer: {
+              selectText: '前往閱讀',
+              navigateText: '上下切換',
+              closeText: '關閉 (ESC)'
+            }
+          }
+        }
+      }
     },
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com' }
-    ],
-    outline: 'deep'
+    outline: {
+      level: [2, 3],
+      label: '本頁知識導覽'
+    },
+    docFooter: {
+      prev: '上一講',
+      next: '下一講'
+    },
+    footer: {
+      message: 'A2.5 企業管理｜執行長專業知識庫（Zero-Noise Consulting Presentation & Dual-Track Knowledge Portal）',
+      copyright: 'Built for DavidCloud Executive Mastery｜遵循森秀明無雜訊簡報 8 大版型與三大顧問公司視覺規範'
+    }
   }
 })
