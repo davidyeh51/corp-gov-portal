@@ -16,10 +16,9 @@ from pptx.enum.shapes import MSO_SHAPE
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-from data_part1 import LECTURES_PART1
-from data_part2 import LECTURES_PART2
+from normalize_data import get_all_normalized_lectures
 
-ALL_LECTURES = LECTURES_PART1 + LECTURES_PART2
+ALL_LECTURES = get_all_normalized_lectures()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PUBLIC_DIR = os.path.join(BASE_DIR, "docs", "public")

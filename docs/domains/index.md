@@ -22,7 +22,6 @@ description: "執行長專業知識庫的模組化擴充底座，串聯公司治
       <a href="/corp-gov-portal/30-lectures/00" style="background:#0077C8; color:#fff; padding:6px 12px; border-radius:6px; font-size:12.5px; font-weight:700; text-decoration:none;">📚 進入 40 講百科</a>
     </div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#0F766E; color:#fff; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:800;">📘 既有知識庫已盤點（擴充預備）</span>
@@ -37,7 +36,6 @@ description: "執行長專業知識庫的模組化擴充底座，串聯公司治
     </div>
     <div style="margin-top:12px; font-size:12px; color:#0F766E; font-weight:700;">⚡ 支援套用 /zero-noise-pptx 轉化為策略顧問簡報</div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#64748B; color:#fff; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:800;">🏗️ 架構預留 SLOT READY</span>
@@ -48,7 +46,6 @@ description: "執行長專業知識庫的模組化擴充底座，串聯公司治
     </div>
     <div style="margin-top:12px; font-size:12px; color:#64748B; font-weight:700;">📂 對應目錄：A2.5.2 營運管理</div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#64748B; color:#fff; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:800;">🏗️ 架構預留 SLOT READY</span>
@@ -59,7 +56,6 @@ description: "執行長專業知識庫的模組化擴充底座，串聯公司治
     </div>
     <div style="margin-top:12px; font-size:12px; color:#64748B; font-weight:700;">📂 對應目錄：A2.5.3 行銷管理</div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#0F766E; color:#fff; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:800;">📘 既有知識庫已盤點（擴充預備）</span>
@@ -72,7 +68,6 @@ description: "執行長專業知識庫的模組化擴充底座，串聯公司治
     </div>
     <div style="margin-top:12px; font-size:12px; color:#0F766E; font-weight:700;">⚡ 支援套用 /zero-noise-pptx 轉化為組織診斷簡報</div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#64748B; color:#fff; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:800;">🏗️ 架構預留 SLOT READY</span>
@@ -83,7 +78,6 @@ description: "執行長專業知識庫的模組化擴充底座，串聯公司治
     </div>
     <div style="margin-top:12px; font-size:12px; color:#64748B; font-weight:700;">📂 對應目錄：A2.5.5 研發管理</div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#0F766E; color:#fff; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:800;">📘 既有知識庫已盤點（擴充預備）</span>
@@ -95,7 +89,6 @@ description: "執行長專業知識庫的模組化擴充底座，串聯公司治
     </div>
     <div style="margin-top:12px; font-size:12px; color:#0F766E; font-weight:700;">⚡ 支援套用 /zero-noise-pptx 轉化為大型專案決策簡報</div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#0F766E; color:#fff; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:800;">📘 既有知識庫已盤點（擴充預備）</span>

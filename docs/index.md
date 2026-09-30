@@ -42,7 +42,6 @@ function toggleKeyword(kw) {
 }
 </script>
 
-<!-- Hero Banner -->
 <div style="background:linear-gradient(135deg, #051C2C 0%, #0A2E46 65%, #004B2B 100%); color:#FFFFFF; border-radius:16px; padding:36px 32px; margin:10px 0 28px 0; box-shadow:0 16px 36px rgba(5,28,44,0.22);">
   <div style="display:grid; grid-template-columns: 62% 38%; gap:24px; align-items:center;">
     <div>
@@ -87,7 +86,6 @@ function toggleKeyword(kw) {
   </div>
 </div>
 
-<!-- 即時關鍵字與認知雙軌檢索中心 -->
 <div class="portal-search-box">
   <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
     <div>
@@ -100,10 +98,7 @@ function toggleKeyword(kw) {
       <button @click="activeLevel='advanced'" :style="{ background: activeLevel==='advanced' ? '#00A3E0' : 'transparent', color: activeLevel==='advanced' ? '#051C2C' : '#fff', border:'none', padding:'5px 12px', borderRadius:'6px', fontSize:'12.5px', fontWeight:'700', cursor:'pointer' }">🏛️ 進階者模式</button>
     </div>
   </div>
-
   <input v-model="query" type="text" class="portal-search-input" placeholder="🔍 請輸入關鍵字搜尋（例如：同股不同權、AB股、獨立董事、累積投票制、毒丸計畫、代理成本、家族憲章）..." />
-
-  <!-- 熱門關鍵字標籤 -->
   <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; align-items:center;">
     <span style="font-size:12.5px; color:#94A3B8; font-weight:700;">🔥 熱門檢索詞：</span>
     <button v-for="kw in hotKeywords" :key="kw" @click="toggleKeyword(kw)" :class="['portal-tag-btn', query===kw ? 'active' : '']">
@@ -111,8 +106,6 @@ function toggleKeyword(kw) {
     </button>
     <button v-if="query" @click="query=''" style="background:#EF4444; color:#fff; border:none; padding:4px 10px; border-radius:999px; font-size:12px; cursor:pointer; font-weight:700;">✖ 清除搜尋</button>
   </div>
-
-  <!-- 四大模組篩選 -->
   <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.14); align-items:center;">
     <span style="font-size:12.5px; color:#94A3B8; font-weight:700;">📂 模組篩選：</span>
     <button @click="activeModule='all'" :class="['portal-tag-btn', activeModule==='all' ? 'active' : '']">全部 40 講 ({ lectures.length })</button>
@@ -124,7 +117,6 @@ function toggleKeyword(kw) {
   </div>
 </div>
 
-<!-- 檢索結果卡片牆 -->
 <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap:18px; margin-bottom:36px;">
   <div v-for="item in filteredLectures" :key="item.id" style="border:1px solid #CBD5E1; border-radius:12px; overflow:hidden; background:#FFFFFF; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 4px 12px rgba(0,0,0,0.04);">
     <div>
@@ -138,7 +130,6 @@ function toggleKeyword(kw) {
           知識庫 { item.kb_id }
         </div>
       </div>
-
       <div style="padding:14px 16px;">
         <div style="font-size:11.5px; color:#64748B; font-weight:700; margin-bottom:4px;">{ item.module }</div>
         <h3 style="margin:0 0 8px 0 !important; font-size:16.5px !important; line-height:1.35 !important; color:#051C2C !important;">
@@ -147,7 +138,6 @@ function toggleKeyword(kw) {
         <div style="background:#F8FAFC; border-left:3px solid #0077C8; padding:7px 10px; font-size:12.5px; font-weight:700; color:#1E293B; line-height:1.42; margin-bottom:10px;">
           💡 { item.conclusion_title }
         </div>
-
         <div v-if="activeLevel==='both' || activeLevel==='beginner'" style="font-size:12.5px; color:#334155; line-height:1.5; margin-bottom:8px;">
           <span style="color:#0077C8; font-weight:800;">🌱 入門導讀：</span>{ item.beginner_summary.slice(0, 68) }…
         </div>
@@ -156,7 +146,6 @@ function toggleKeyword(kw) {
         </div>
       </div>
     </div>
-
     <div style="padding:10px 16px; background:#F8FAFC; border-top:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center;">
       <a :href="item.doc_link" style="color:#0077C8; font-size:13px; font-weight:800; text-decoration:none;">📖 完整教材與雙軌解析</a>
       <a :href="item.slide_link" style="background:#051C2C; color:#fff; padding:4px 10px; border-radius:5px; font-size:12px; font-weight:700; text-decoration:none;">🎯 簡報預覽</a>
@@ -179,7 +168,6 @@ function toggleKeyword(kw) {
     </div>
     <div style="margin-top:10px;"><a href="/corp-gov-portal/slides/" style="color:#0077C8; font-weight:800; font-size:13px;">➔ 進入簡報劇場與知識庫</a></div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#0F766E; color:#fff; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:800;">📘 擴充預備</span>
@@ -188,7 +176,6 @@ function toggleKeyword(kw) {
     </div>
     <div style="margin-top:10px;"><a href="/corp-gov-portal/domains/" style="color:#0F766E; font-weight:800; font-size:13px;">➔ 查看領域擴充館</a></div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#0F766E; color:#fff; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:800;">📘 擴充預備</span>
@@ -197,7 +184,6 @@ function toggleKeyword(kw) {
     </div>
     <div style="margin-top:10px;"><a href="/corp-gov-portal/domains/" style="color:#0F766E; font-weight:800; font-size:13px;">➔ 查看領域擴充館</a></div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#0F766E; color:#fff; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:800;">📘 擴充預備</span>

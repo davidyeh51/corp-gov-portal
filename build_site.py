@@ -19,10 +19,9 @@ import opencc
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-from data_part1 import LECTURES_PART1
-from data_part2 import LECTURES_PART2
+from normalize_data import get_all_normalized_lectures
 
-ALL_LECTURES = LECTURES_PART1 + LECTURES_PART2
+ALL_LECTURES = get_all_normalized_lectures()
 EXEC_16_IDS = ["00", "01", "03", "07", "09", "10", "11", "16", "17", "21", "24", "26", "29", "32"]
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -52,6 +51,12 @@ def with_base(path_str):
     return f"{SITE_BASE}{clean}"
 
 
+def compact_html(html_str):
+    """移除 HTML 區塊內的所有空白行與過多縮排，防止 CommonMark (markdown-it) 提前截斷 HTML block"""
+    lines = [line.strip() for line in html_str.splitlines() if line.strip()]
+    return "\n".join(lines)
+
+
 def load_source_markdown_files():
     """讀取原始 40 講 .md 檔案，轉為繁體中文並提取本地圖片映射"""
     md_files = sorted(glob.glob(os.path.join(SOURCE_FOLDER, "*.md")))
@@ -67,12 +72,15 @@ def load_source_markdown_files():
         raw = re.sub(r'🎧\s*\[收听音频\]\([^\)]+\)\s*', '', raw)
         # 轉換為繁體中文 (台灣常用詞彙)
         trad = cc.convert(raw)
+        # 轉義大括號與小於號，防止 Vue SFC 模板編譯器將內文誤判為 HTML 標籤或變數
+        trad = trad.replace("{", "&#123;").replace("}", "&#125;")
+        trad = trad.replace("<", "&lt;")
         lec_id = f"{idx:02d}"
         # 將 umiwi 圖片網址替換為本地已下載的 /corp-gov-portal/images/lectures/lec_XX_Y.ext
         img_counter = [0]
 
         def repl_img(match):
-            alt_txt = match.group(1)
+            alt_txt = match.group(1).replace('"', '&quot;')
             url = match.group(2)
             img_counter[0] += 1
             ext = ".png" if ".png" in url.lower() else ".jpg"
@@ -264,7 +272,7 @@ def render_full_slide_card_html(lec, page_idx=1, total_pages=40):
     adv_name = lec.get("advanced", {}).get("model_name", "")
     adv_desc = lec.get("advanced", {}).get("model_desc", "")
 
-    return f"""
+    raw_html = f"""
 <div class="zn-slide-frame {style_cls}">
   <div class="zn-slide-top-bar"></div>
   <div class="zn-slide-header">
@@ -276,7 +284,6 @@ def render_full_slide_card_html(lec, page_idx=1, total_pages=40):
     <h2 class="zn-slide-action-title">{lec.get('conclusion_title', '')}</h2>
     <p class="zn-slide-subtitle">{lec.get('subtitle', '')}</p>
   </div>
-
   <div class="zn-slide-body">
     <div class="zn-slide-main">
       {left_html}
@@ -299,13 +306,13 @@ def render_full_slide_card_html(lec, page_idx=1, total_pages=40):
       </div>
     </div>
   </div>
-
   <div class="zn-slide-footer">
     <span>{lec.get('footer', '')} ｜ 關鍵字：{kw_tags}</span>
     <span class="zn-slide-pagenum">SLIDE {page_idx} / {total_pages}</span>
   </div>
 </div>
 """
+    return compact_html(raw_html)
 
 
 def write_vitepress_config():
@@ -1349,7 +1356,6 @@ description: "{lec['conclusion_title']}"
     <h4 style="color:#0077C8; margin-top:14px;">📖 經典商業案例故事</h4>
     <p style="font-size:14px; line-height:1.65; background:#FFFFFF; padding:12px; border-radius:8px; border:1px solid #BAE6FD;">{beg.get('case_story', '')}</p>
   </div>
-
   <div class="track-card track-advanced">
     <span class="track-badge">🏛️ 進階者思考架構（CEO Mental Model）</span>
     <h3 style="margin-top:4px; color:#051C2C;">{adv.get('model_name', '')}</h3>
@@ -1394,15 +1400,11 @@ description: "{lec['conclusion_title']}"
 
 ## 📜 原課程完整知識文本（繁體中文精校版）
 
-<details style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:8px; padding:14px 18px; margin-top:16px;">
-<summary style="cursor:pointer; font-weight:800; color:#051C2C; font-size:15px;">📖 點擊展開／收合《{lec['code']} {lec['title']}》完整原版課程文稿（含課後問答與圖表）</summary>
-
-<div style="margin-top:16px; border-top:1px solid #E2E8F0; padding-top:16px;">
+::: details 📖 點擊展開／收合《{lec['code']} {lec['title']}》完整原版課程文稿（含課後問答與圖表）
 
 {raw_transcript}
 
-</div>
-</details>
+:::
 """
         out_file = os.path.join(LECTURES_OUT_DIR, f"{lid}.md")
         with open(out_file, "w", encoding="utf-8") as f:
@@ -1583,14 +1585,11 @@ onUnmounted(() => {{
         📚 全 40 講完整簡報百科 ({{ allSlides.length }} 頁)
       </button>
     </div>
-
     <div style="display:flex; flex-wrap:wrap; gap:8px;">
       <a href="{with_base('/downloads/劉松博_公司治理30講_無雜訊顧問簡報_精華16頁.pptx')}" download style="background:#0077C8; color:#fff; padding:7px 14px; border-radius:8px; text-decoration:none; font-size:13px; font-weight:700;">📥 下載精華 16 頁 .pptx</a>
       <a href="{with_base('/downloads/劉松博_公司治理30講_全40講無雜訊顧問簡報庫.pptx')}" download style="background:#177B57; color:#fff; padding:7px 14px; border-radius:8px; text-decoration:none; font-size:13px; font-weight:700;">📥 下載完整 42 頁 .pptx</a>
     </div>
   </div>
-
-  <!-- 模組篩選與關鍵字即時檢索 -->
   <div style="display:grid; grid-template-columns: 1fr 280px; gap:12px; margin-top:14px; align-items:center;">
     <div style="display:flex; flex-wrap:wrap; gap:6px;">
       <button @click="setModule('all')" :class="['portal-tag-btn', moduleFilter==='all' ? 'active' : '']">全部模組</button>
@@ -1603,11 +1602,8 @@ onUnmounted(() => {{
       <input v-model="searchQuery" @input="currentIndex=0" type="text" placeholder="🔍 篩選簡報關鍵字 (如：萬科、AB股、獨董)..." style="width:100%; padding:7px 12px; border-radius:6px; border:1px solid #00A3E0; background:#fff; color:#0F172A; font-size:13px;" />
     </div>
   </div>
-
-  <!-- 頁碼導覽列 -->
   <div v-if="filteredSlides.length > 0" style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.15);">
     <button @click="prevSlide" :disabled="currentIndex <= 0" style="background:rgba(255,255,255,0.15); color:#fff; padding:6px 16px; border-radius:6px; border:none; cursor:pointer; font-weight:700;">⬅️ 上一頁</button>
-    
     <div style="display:flex; align-items:center; gap:10px;">
       <span style="font-size:13px; color:#CBD5E1;">快速跳頁：</span>
       <select v-model="currentIndex" style="padding:6px 12px; border-radius:6px; background:#0F172A; color:#fff; border:1px solid #00A3E0; font-size:13px; max-width:420px;">
@@ -1617,16 +1613,12 @@ onUnmounted(() => {{
       </select>
       <span style="font-weight:800; color:#00A3E0; font-size:14px;">{{ currentIndex + 1 }} / {{ filteredSlides.length }}</span>
     </div>
-
     <button @click="nextSlide" :disabled="currentIndex >= filteredSlides.length - 1" style="background:#0077C8; color:#fff; padding:6px 16px; border-radius:6px; border:none; cursor:pointer; font-weight:700;">下一頁 ➡️</button>
   </div>
 </div>
 
-<!-- 簡報主畫面 -->
 <div v-if="currentSlide">
   <div v-html="currentSlide.html"></div>
-
-  <!-- 簡報下方：入門/進階雙軌解析 ＆ 三段式顧問講稿切換面板 -->
   <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-radius:10px; padding:20px; margin-top:16px; box-shadow:0 4px 12px rgba(0,0,0,0.04);">
     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; border-bottom:1px solid #E2E8F0; padding-bottom:12px; margin-bottom:16px;">
       <div style="display:flex; gap:8px;">
@@ -1642,7 +1634,6 @@ onUnmounted(() => {{
       </div>
       <a :href="currentSlide.doc_link" style="color:#0077C8; font-weight:800; text-decoration:none; font-size:14px;">📖 前往本講完整深度知識頁 ➔</a>
     </div>
-
     <div v-if="activeTab==='dual'" class="dual-track-grid" style="margin:0;">
       <div class="track-card track-beginner">
         <span class="track-badge">🌱 入門者導讀（Plain-Language & Case）</span>
@@ -1659,7 +1650,6 @@ onUnmounted(() => {{
         </div>
       </div>
     </div>
-
     <div v-if="activeTab==='notes'" style="display:flex; flex-direction:column; gap:10px; font-size:14px; line-height:1.6;">
       <div style="background:#F0F9FF; border-left:4px solid #0077C8; padding:10px 14px; border-radius:6px;">
         <b>💡 【結論】：</b>{{ currentSlide.notes_conclusion }}
@@ -1671,7 +1661,6 @@ onUnmounted(() => {{
         <b>🔗 【鋪墊】：</b>{{ currentSlide.notes_transition }}
       </div>
     </div>
-
     <div v-if="activeTab==='diagram' && currentSlide.course_image" style="text-align:center;">
       <img :src="currentSlide.course_image" style="max-height:380px; margin:0 auto; border-radius:8px;" />
       <p style="margin-top:8px; font-size:13px; color:#475569;">▲ {{ currentSlide.course_image_caption }}</p>
@@ -1770,7 +1759,6 @@ description: "執行長專業知識庫的模組化擴充底座，串聯公司治
       <a href="{with_base('/30-lectures/00')}" style="background:#0077C8; color:#fff; padding:6px 12px; border-radius:6px; font-size:12.5px; font-weight:700; text-decoration:none;">📚 進入 40 講百科</a>
     </div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#0F766E; color:#fff; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:800;">📘 既有知識庫已盤點（擴充預備）</span>
@@ -1785,7 +1773,6 @@ description: "執行長專業知識庫的模組化擴充底座，串聯公司治
     </div>
     <div style="margin-top:12px; font-size:12px; color:#0F766E; font-weight:700;">⚡ 支援套用 /zero-noise-pptx 轉化為策略顧問簡報</div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#64748B; color:#fff; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:800;">🏗️ 架構預留 SLOT READY</span>
@@ -1796,7 +1783,6 @@ description: "執行長專業知識庫的模組化擴充底座，串聯公司治
     </div>
     <div style="margin-top:12px; font-size:12px; color:#64748B; font-weight:700;">📂 對應目錄：A2.5.2 營運管理</div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#64748B; color:#fff; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:800;">🏗️ 架構預留 SLOT READY</span>
@@ -1807,7 +1793,6 @@ description: "執行長專業知識庫的模組化擴充底座，串聯公司治
     </div>
     <div style="margin-top:12px; font-size:12px; color:#64748B; font-weight:700;">📂 對應目錄：A2.5.3 行銷管理</div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#0F766E; color:#fff; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:800;">📘 既有知識庫已盤點（擴充預備）</span>
@@ -1820,7 +1805,6 @@ description: "執行長專業知識庫的模組化擴充底座，串聯公司治
     </div>
     <div style="margin-top:12px; font-size:12px; color:#0F766E; font-weight:700;">⚡ 支援套用 /zero-noise-pptx 轉化為組織診斷簡報</div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#64748B; color:#fff; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:800;">🏗️ 架構預留 SLOT READY</span>
@@ -1831,7 +1815,6 @@ description: "執行長專業知識庫的模組化擴充底座，串聯公司治
     </div>
     <div style="margin-top:12px; font-size:12px; color:#64748B; font-weight:700;">📂 對應目錄：A2.5.5 研發管理</div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#0F766E; color:#fff; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:800;">📘 既有知識庫已盤點（擴充預備）</span>
@@ -1843,7 +1826,6 @@ description: "執行長專業知識庫的模組化擴充底座，串聯公司治
     </div>
     <div style="margin-top:12px; font-size:12px; color:#0F766E; font-weight:700;">⚡ 支援套用 /zero-noise-pptx 轉化為大型專案決策簡報</div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#0F766E; color:#fff; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:800;">📘 既有知識庫已盤點（擴充預備）</span>
@@ -1942,7 +1924,6 @@ function toggleKeyword(kw) {{
 }}
 </script>
 
-<!-- Hero Banner -->
 <div style="background:linear-gradient(135deg, #051C2C 0%, #0A2E46 65%, #004B2B 100%); color:#FFFFFF; border-radius:16px; padding:36px 32px; margin:10px 0 28px 0; box-shadow:0 16px 36px rgba(5,28,44,0.22);">
   <div style="display:grid; grid-template-columns: 62% 38%; gap:24px; align-items:center;">
     <div>
@@ -1987,7 +1968,6 @@ function toggleKeyword(kw) {{
   </div>
 </div>
 
-<!-- 即時關鍵字與認知雙軌檢索中心 -->
 <div class="portal-search-box">
   <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
     <div>
@@ -2000,10 +1980,7 @@ function toggleKeyword(kw) {{
       <button @click="activeLevel='advanced'" :style="{{ background: activeLevel==='advanced' ? '#00A3E0' : 'transparent', color: activeLevel==='advanced' ? '#051C2C' : '#fff', border:'none', padding:'5px 12px', borderRadius:'6px', fontSize:'12.5px', fontWeight:'700', cursor:'pointer' }}">🏛️ 進階者模式</button>
     </div>
   </div>
-
   <input v-model="query" type="text" class="portal-search-input" placeholder="🔍 請輸入關鍵字搜尋（例如：同股不同權、AB股、獨立董事、累積投票制、毒丸計畫、代理成本、家族憲章）..." />
-
-  <!-- 熱門關鍵字標籤 -->
   <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; align-items:center;">
     <span style="font-size:12.5px; color:#94A3B8; font-weight:700;">🔥 熱門檢索詞：</span>
     <button v-for="kw in hotKeywords" :key="kw" @click="toggleKeyword(kw)" :class="['portal-tag-btn', query===kw ? 'active' : '']">
@@ -2011,8 +1988,6 @@ function toggleKeyword(kw) {{
     </button>
     <button v-if="query" @click="query=''" style="background:#EF4444; color:#fff; border:none; padding:4px 10px; border-radius:999px; font-size:12px; cursor:pointer; font-weight:700;">✖ 清除搜尋</button>
   </div>
-
-  <!-- 四大模組篩選 -->
   <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.14); align-items:center;">
     <span style="font-size:12.5px; color:#94A3B8; font-weight:700;">📂 模組篩選：</span>
     <button @click="activeModule='all'" :class="['portal-tag-btn', activeModule==='all' ? 'active' : '']">全部 40 講 ({{ lectures.length }})</button>
@@ -2024,7 +1999,6 @@ function toggleKeyword(kw) {{
   </div>
 </div>
 
-<!-- 檢索結果卡片牆 -->
 <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap:18px; margin-bottom:36px;">
   <div v-for="item in filteredLectures" :key="item.id" style="border:1px solid #CBD5E1; border-radius:12px; overflow:hidden; background:#FFFFFF; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 4px 12px rgba(0,0,0,0.04);">
     <div>
@@ -2038,7 +2012,6 @@ function toggleKeyword(kw) {{
           知識庫 {{ item.kb_id }}
         </div>
       </div>
-
       <div style="padding:14px 16px;">
         <div style="font-size:11.5px; color:#64748B; font-weight:700; margin-bottom:4px;">{{ item.module }}</div>
         <h3 style="margin:0 0 8px 0 !important; font-size:16.5px !important; line-height:1.35 !important; color:#051C2C !important;">
@@ -2047,7 +2020,6 @@ function toggleKeyword(kw) {{
         <div style="background:#F8FAFC; border-left:3px solid #0077C8; padding:7px 10px; font-size:12.5px; font-weight:700; color:#1E293B; line-height:1.42; margin-bottom:10px;">
           💡 {{ item.conclusion_title }}
         </div>
-
         <div v-if="activeLevel==='both' || activeLevel==='beginner'" style="font-size:12.5px; color:#334155; line-height:1.5; margin-bottom:8px;">
           <span style="color:#0077C8; font-weight:800;">🌱 入門導讀：</span>{{ item.beginner_summary.slice(0, 68) }}…
         </div>
@@ -2056,7 +2028,6 @@ function toggleKeyword(kw) {{
         </div>
       </div>
     </div>
-
     <div style="padding:10px 16px; background:#F8FAFC; border-top:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center;">
       <a :href="item.doc_link" style="color:#0077C8; font-size:13px; font-weight:800; text-decoration:none;">📖 完整教材與雙軌解析</a>
       <a :href="item.slide_link" style="background:#051C2C; color:#fff; padding:4px 10px; border-radius:5px; font-size:12px; font-weight:700; text-decoration:none;">🎯 簡報預覽</a>
@@ -2079,7 +2050,6 @@ function toggleKeyword(kw) {{
     </div>
     <div style="margin-top:10px;"><a href="{with_base('/slides/')}" style="color:#0077C8; font-weight:800; font-size:13px;">➔ 進入簡報劇場與知識庫</a></div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#0F766E; color:#fff; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:800;">📘 擴充預備</span>
@@ -2088,7 +2058,6 @@ function toggleKeyword(kw) {{
     </div>
     <div style="margin-top:10px;"><a href="{with_base('/domains/')}" style="color:#0F766E; font-weight:800; font-size:13px;">➔ 查看領域擴充館</a></div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#0F766E; color:#fff; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:800;">📘 擴充預備</span>
@@ -2097,7 +2066,6 @@ function toggleKeyword(kw) {{
     </div>
     <div style="margin-top:10px;"><a href="{with_base('/domains/')}" style="color:#0F766E; font-weight:800; font-size:13px;">➔ 查看領域擴充館</a></div>
   </div>
-
   <div class="domain-card">
     <div>
       <span style="background:#0F766E; color:#fff; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:800;">📘 擴充預備</span>
