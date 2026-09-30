@@ -1,0 +1,101 @@
+
+:root {
+  --vp-c-brand-1: #051C2C; /* McKinsey Navy */
+  --vp-c-brand-2: #2251FF; /* McKinsey Blue */
+  --vp-c-brand-3: #87B3D6; /* Light Blue */
+  --vp-c-text-1: #1F2937;
+  --vp-c-bg: #F9FAFB; /* Very light gray */
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #051C2C 30%, #2251FF);
+  
+  --vp-font-family-base: 'Helvetica Neue', Arial, 'Noto Sans TC', sans-serif;
+}
+
+/* Presentation Slide Format */
+.vp-doc {
+  background-color: #FFFFFF;
+  padding: 40px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  border-top: 6px solid var(--vp-c-brand-1);
+}
+
+.vp-doc h1 {
+  font-size: 2.2em;
+  color: var(--vp-c-brand-1);
+  border-bottom: 2px solid var(--vp-c-brand-3);
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.vp-doc h2 {
+  font-size: 1.6em;
+  color: var(--vp-c-brand-2);
+  margin-top: 40px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eaecef;
+}
+
+.vp-doc h3 {
+  font-size: 1.3em;
+  color: var(--vp-c-brand-1);
+}
+
+.vp-doc p, .vp-doc li {
+  font-size: 1.1em;
+  line-height: 1.7;
+  color: #374151;
+}
+
+.vp-doc strong {
+  color: var(--vp-c-brand-1);
+}
+
+/* Table McKinsey Style */
+.vp-doc table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 0.95em;
+}
+
+.vp-doc th {
+  background-color: var(--vp-c-brand-1);
+  color: #FFFFFF;
+  font-weight: 600;
+  text-align: left;
+  padding: 12px 16px;
+  border: 1px solid var(--vp-c-brand-1);
+}
+
+.vp-doc td {
+  padding: 12px 16px;
+  border: 1px solid #E5E7EB;
+}
+
+.vp-doc tr:nth-child(even) {
+  background-color: #F3F4F6;
+}
+
+/* Images */
+.vp-doc img {
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 100%;
+  margin: 20px auto;
+  display: block;
+}
+
+/* Callouts / Blockquotes */
+.vp-doc blockquote {
+  border-left: 4px solid var(--vp-c-brand-2);
+  background-color: #F0F5FF;
+  margin: 20px 0;
+  padding: 16px;
+  border-radius: 0 4px 4px 0;
+  color: var(--vp-c-text-1);
+}
